@@ -1,0 +1,40 @@
+{% extends "app/base.html" %}
+
+{% load lazysignup_tags %}
+
+{% block title %}Bias Trainer{% endblock %}
+
+{% block content %}
+
+    <div style="text-align: center">
+        <h4>
+            {% if not user|is_lazy_user %}
+
+                Welcome back {{ user.username }}
+            {% else %}
+                <a href="/convert">Save your progress</a> by signing up with username & password
+                (not
+                even
+                email!)
+            {% endif %}
+
+        </h4>
+
+        <br>
+        <a href="/question/new">
+            <button>
+                {% if not user|is_lazy_user %}
+                    Continue practice
+                {% else %}
+                    Start training
+                {% endif %}
+            </button>
+        </a>
+
+        <br><br>
+
+    </div>
+    <br><br>
+    {{ content | safe }}
+
+{% endblock %}

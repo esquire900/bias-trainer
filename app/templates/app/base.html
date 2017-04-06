@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="style.css"/>
+    <title>{% block title %}My amazing site{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body,html {
+            font-family: 'Constantia', "Times New Roman", sans-serif;
+        }
+
+        input {
+            padding: 5px;
+            margin-left: 5px;
+            border: 1px solid #c6c6c6;
+            border-radius: 5px;
+        }
+
+        .content {
+            margin-right: auto;
+            margin-left: auto;
+            padding-left: 30px;
+            padding-right: 30px;
+            max-width: 800px;
+            background-color: white;
+        }
+
+        nav {
+            border-bottom: 1px solid #cbcbcb;
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 50px;
+        }
+
+        nav > div {
+            flex: 1 1 auto;
+            width: 50%;
+            transition: width 0.7s ease-out;
+        }
+
+        button, input[type="submit"] {
+            box-shadow: rgb(255, 255, 255) 0px 1px 0px 0px inset;
+            background-color: rgb(249, 249, 249);
+            border-radius: 6px;
+            border: 1px solid rgb(220, 220, 220);
+            display: inline-block;
+            cursor: pointer;
+            color: rgb(102, 102, 102);
+            font-size: 15px;
+            font-weight: bold;
+            padding: 6px 24px;
+            text-decoration: none;
+            text-shadow: rgb(255, 255, 255) 0px 1px 0px;
+        }
+
+        a {
+            color: #315fff;
+            text-decoration: none;
+        }
+
+        .flex {
+            flex-direction: row;
+            display: flex;
+        }
+
+        .flex > .row {
+            flex: 1 1 auto;
+        }
+
+        p {
+            text-indent: 30px;
+            line-height: 140%;
+        }
+    </style>
+    <script language="JavaScript" src="//cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+    <nav>
+        <div>
+            <h2 class="title"><a href="/">Bias Trainer</a></h2>
+        </div>
+        <div style="text-align: right;padding-top: 25px;">
+            An experiment to train the mind against biases
+        </div>
+    </nav>
+    {% block content %}{% endblock %}
+
+</div>
+</body>
+</html>

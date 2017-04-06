@@ -1,0 +1,61 @@
+{% extends "app/base.html" %}
+
+{% block title %}My amazing blog{% endblock %}
+
+{% block content %}
+    <div id="vue-instance" style="text-align: center;font-size: 22px;padding-top:20px;">
+        <div v-show="!showQuestion">
+            <div>
+                {{ bias_question.description }}
+            </div>
+
+            <div style=" margin-right: auto;
+            margin-left: auto;width: 200px;padding-top:20px">
+                <button v-on:click="doShowQuestion" style="width: 200px">Okay.. {% verbatim %}({{ counter }}){% endverbatim %}
+                </button>
+            </div>
+        </div>
+
+
+        <div class="question" v-show="showQuestion">
+            {{ question.description }}
+            <br><br>
+            <form action="/question/{{ id }}/" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <br><br>
+                <input type="submit" value="Submit question" autofocus/>
+            </form>
+        </div>
+
+
+    </div>
+
+    <script>
+        // our VueJs instance bound to the div with an id of vue-instance
+        var vm = new Vue({
+            el: '#vue-instance',
+            data: {
+                showQuestion: false, counter: 5
+            },
+            methods: {
+                doShowQuestion: function () {
+                    this.showQuestion = true;
+                    setTimeout(function(){
+                        document.getElementsByTagName("input")[1].focus();
+                    },50);
+                }
+            },
+            created: function () {
+                var self = this;
+
+                setInterval(function () {
+                    self.counter -= 1;
+                    if (self.counter <= 0) {
+                        self.doShowQuestion();
+                    }
+                }, 1000);
+            }
+        });
+    </script>
+{% endblock %}
