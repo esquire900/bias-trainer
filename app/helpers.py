@@ -19,7 +19,9 @@ class Anchoring:
         if self.cnt == 0:
             return 'start'
         if self.cnt == 10:
-            return 'explanation'
+            return 'first_explanation'
         if self.cnt == 20:
-            return 2
+            return 'far_and_close'
+        if self.cnt == 30:
+            return 'dont_trust_anything'
         return False

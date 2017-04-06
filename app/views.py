@@ -24,6 +24,13 @@ def question(request, question_id):
     if user_answers_question.is_answered:
         return HttpResponseBadRequest("You've already answered this one!")
 
+    display_location = user_answers_question.get_anchoring().get_display_explanation()
+    if display_location is not False:
+        content = ExplanationTexts.objects.get(location=display_location)
+        content = content.text
+    else:
+        content = False
+
     if request.method == 'POST':
         form = QuestionForm(request.POST)
         if form.is_valid():
@@ -34,7 +41,8 @@ def question(request, question_id):
     else:
         form = QuestionForm()
     context = {'form': form, 'question': user_answers_question.question,
-               'bias_question': user_answers_question.bias_question, 'id': question_id}
+               'bias_question': user_answers_question.bias_question, 'id': question_id, 'content': content,
+               'has_content': content is not False}
 
     return render(request, 'app/question.html', context)
 

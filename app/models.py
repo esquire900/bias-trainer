@@ -13,20 +13,17 @@ class QuestionStageTypes(ChoiceEnum):
     targeted_fact_close = 3
 
 
-# within your models.Model class...
-
-# Create your models here.
 class Question(models.Model):
     description = models.CharField(max_length=100, null=True)
     answer = models.IntegerField(default=0)
-
+    source = models.TextField(max_length=1000, null=True)
     def __str__(self):
         return self.description
 
 
 class QuestionBiasGenerator(models.Model):
     type = models.CharField(max_length=1, choices=QuestionStageTypes.choices())
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, null=True)
     description = models.CharField(max_length=100)
     is_higher = models.BooleanField(default=True)
 
@@ -43,9 +40,12 @@ class UserAnswersQuestion(models.Model):
         self.add_bias_question()
         super(UserAnswersQuestion, self).save(*args, **kwargs)
 
-    def add_bias_question(self):
+    def get_anchoring(self):
         cnt = UserAnswersQuestion.objects.filter(user=self.user.id).exclude(is_answered=False).count()
-        a = Anchoring(self.user, cnt)
+        return Anchoring(self.user, cnt)
+
+    def add_bias_question(self):
+        a = self.get_anchoring()
         stage = a.get_user_stage()
         type_list = []
         if stage is 0 or stage is 1:
@@ -55,6 +55,10 @@ class UserAnswersQuestion(models.Model):
 
         self.bias_question = QuestionBiasGenerator.objects.filter(question=self.question).filter(type__in=type_list)[0]
 
+
 class ExplanationTexts(models.Model):
     location = models.CharField(max_length=20, null=True)
     text = RichTextField()
+
+    def __str__(self):
+        return self.location;
